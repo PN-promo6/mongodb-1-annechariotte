@@ -1,0 +1,395 @@
+EXERCICE 1
+Rédigez la commande permettant de créer une base MongoDB nommée “twisted_db” 
+
+    > use twisted_db
+
+
+EXERCICE 2
+Rédigez la commande permettant d’afficher en console toutes les bases MongoDB
+
+    > show databases
+
+
+EXERCICE 3
+Rédigez les commandes permettant de :
+créer une base nommée “crooked_db”
+créer, dans cette base, une collection nommée “users”
+d’afficher en console toutes les bases
+
+    > use crooked_db
+    > db.createCollection("users")
+    > show databases
+
+
+EXERCICE 4
+Rédigez les commandes permettant de :
+créer une base nommée “fake_db”
+créer, dans cette base, une collection nommée “fake_users”
+créer, dans cette base, une collection nommée “fake_customers”
+afficher la liste des collections de la base “fake_db”
+
+    > use fake_db
+    > db.createCollection("fake_users")
+    > db.createCollection("fake_customers")
+    > show collections
+
+
+EXERCICE 5
+Rédigez les commandes permettant d’insérer dans la collection nommée “fake_users” le document stockant les informations suivantes :
+Un utilisateur nommé “Mick”, habitant à “Chicago”, ayant 64 ans
+
+    > db.users.insert({name:"Mick", city:"Chicago", age:"64"})
+
+
+EXERCICE ANNEXE
+Importer une base existante (au format JSON)
+Copiez le fichier JSON sur votre machine
+Ouvrez un nouveau terminal
+Saisissez la commande :
+mongoimport --db dbName --collection collectionName --file fileName.json --jsonArray
+
+
+    TERMINAL 1
+    > use cooked_db
+
+    TERMINAL 2
+    > mongoimport --db cooked_db --collection users --file /Users/annecharlottedrevensek/Desktop/http-cours-2/api-node/users.json --jsonArray
+    > mongoimport --db cooked_db --collection recipes --file /Users/annecharlottedrevensek/Desktop/http-cours-2/api-node/recipes.json --jsonArray
+
+    TERMINAL 1
+    > show collections
+
+
+EXERCICE 6
+Rédigez les commandes permettant de :
+Créer une base nommée “magic_db”
+Créer, dans cette base, une collection nommée “magic_users”
+Insérer un document correspondant à un utilisateur nommé “Johnson”
+Récupérer la liste des documents contenus dans cette collection 
+
+    > use magic_db
+    > db.createCollection("magic_users")
+    > db.magic_users.insert({name:"Johnson"})
+    > db.magic_users.find()
+
+
+EXERCICE 7
+Rédigez les commandes permettant :
+D’ajouter dans la base “magic_db”, une collection nommée “magic_products”
+D’insérer un document correspondant à un produit nommé “Crazy wine”
+D’insérer un document correspondant à un produit nommé “Weird shoes”
+Récupérer la liste des documents contenus dans cette collection 
+Récupérer un seul des documents contenus dans cette collection 
+
+Est-ce que cette dernière commande va forcément afficher le document correspondant au produit “Crazy Wine” ?
+
+    > db.createcollection("magic-products")
+    > db.magic_products([{name:"Crazy wine"},{name:"Weird shoes"}])
+    > db.magic_products.find()
+    > db.magic_products.findOne()
+
+
+EXERCICE 8
+Rédigez les commandes permettant de :
+Sélectionner la base nommée “magic_db”
+Afficher de manière lisible tous les documents contenus dans la collection “magic_users” de cette base
+
+    > db.magic_users.find().pretty()
+
+
+EXERCICE 9
+En imaginant que vous soyez en train de travailler sur une collection nommée “users”, 
+comment récupérer l’ensemble des documents correspondant aux utilisateurs dont l’age est de 20 ans ?
+
+Note : On suppose qu’une propriété nommée “age” existe dans ces documents, et que cette propriété est de type Entier
+
+    > db.users.find({ "age" : 20 }).pretty()
+
+
+EXERCICE 10
+En imaginant que vous soyez en train de travailler sur une collection nommée “products”, 
+comment récupérer l’ensemble des documents correspondant aux produits répondant aux critères suivant :
+- les produits sont en vente
+- les produits coûtent 100 euros 
+
+Note : 
+On suppose qu’une propriété nommée “on_sale” existe dans ces documents. Cette propriété est de type Booleen.
+On suppose qu’une propriété nommée “price” existe dans ces documents. Cette propriété est de type Entier.
+
+    > db.products.find({ "on_sale" : true, "price" : 100 })
+
+
+EXERCICE 11
+Base : artists_db
+Collection : bands
+[{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c129"),
+    "members" : ["Jimmy", "Eleni"]
+},
+{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c130"),
+    "members" : ["Eleni", "Christine"]
+},
+{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c131"),
+    "members" : ["Lil Random", "HHH", "Doll"]
+}]
+
+Rédigez la commande permettant de récupérer tous les groupes composés d’un membre nommé “Eleni”.
+
+    > db.bands.find({ "members" : "Eleni" }).pretty()
+
+
+EXERCICE 12
+Base : artists_db
+Collection : bands
+[{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c129"),
+    "members" : ["Jimmy", "Eleni"]
+},
+{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c130"),
+    "members" : ["Eleni", "Christine"]
+},
+{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c131"),
+    "members" : ["Lil Random", "HHH", "Doll"]
+}]
+
+Rédigez la commande permettant de récupérer tous les groupes composés d’un membre nommé “Eleni” ET “Doll”
+
+    > db.bands.find({ "members" : { $all : ["Eleni","Doll"] } }).pretty()
+
+Rédigez la commande permettant de récupérer tous les groupes composés d’un membre nommé “Eleni” OU “Doll”
+
+    > db.bands.find({ "members" : { $in : ["Eleni","Doll"] } }).pretty()
+
+
+EXERCICE 13
+Base : artists_db
+Collection : bands
+[{
+    "_id": ObjectId("5cebdd20953b7f098ac9c129"),
+    "members": ["Jimmy", "Eleni"],
+    "creation_date": 2014
+},
+{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c130"),
+    "members" : ["Eleni", "Christine"],
+    "creation_date": 2008
+},
+{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c131"),
+    "members" : ["Lil Random", "HHH", "Doll"],
+    "creation_date": 2019
+}]
+
+Rédigez la commande permettant de récupérer tous les groupes qui ont été créés avant 2010.
+
+    > db.bands.find({ "creation_date" : { $lt : 2010 } })
+OU  > db.bands.find({ "creation_date" : { $lte : 2009 } })
+
+
+EXERCICE 14
+Base : artists_db
+Collection : bands
+[{
+    "_id": ObjectId("5cebdd20953b7f098ac9c129"),
+    "members": ["Jimmy", "Eleni"],
+    "creation_date": 2014,
+    "adress" : {
+   	    "country" : "France",
+   	    "city" : "Grenoble"
+    }
+},
+{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c130"),
+    "members" : ["Eleni", "Christine"],
+    "creation_date": 2008,
+    "adress" : {
+   	    "country" : "Portugal",
+   	    "city" : "Coimbra"
+    }
+},
+{
+    "_id" : ObjectId("5cebdd20953b7f098ac9c131"),
+    "members" : ["Lil Random", "HHH", "Doll"],
+    "creation_date": 2019,
+    "adress" : {
+   	    "country" : "USA",
+   	    "city" : "Chicago"
+    }
+}]
+
+Rédigez la commande permettant de récupérer tous les groupes 
+- qui ont été créés après 2010 ET - qui sont situés à Coimbra.
+
+    > db.bands.find({ "creation_date" : { $gt : 2010 }, "adress.city" : "Coimbra" })
+
+
+EXERCICE 15
+Dans une collection nommée players, 
+comment récupérer tous les documents possédant une propriété team dont la valeur est la chaîne de caractère "Seattle Supersonics"
+
+    > db.players.find({ "team" : "Seattle Supersonics" })
+
+
+EXERCICE 16
+Dans une collection nommée players, 
+comment récupérer tous les documents possédant une propriété jerseyNumber dont la valeur est l’entier 40
+
+    > db.players.find({ "jerseyNumber" : 40 })
+
+
+EXERCICE 17
+Dans une collection nommée players, 
+comment récupérer tous les documents possédant une propriété previousTeams dont la valeur, qui est un tableau de chaînes de caractères, contient la chaîne "Chicago Bulls"
+
+    > db.players.find({ "previousTeams" : "Chicago Bulls" })
+
+
+EXERCICE 18
+Dans une collection nommée players, 
+comment récupérer tous les documents possédant une propriété previousTeams dont la valeur, qui est un tableau de chaînes de caractères, contient la chaîne "Chicago Bulls" ou la chaîne "Miami Heat"
+
+    > db.players.find({ "previousTeams" : { $in : [ "Chicago Bulls", "Miami Heat" ] }})
+
+
+EXERCICE 19
+Dans une collection nommée players, 
+comment récupérer tous les documents possédant une propriété previousTeams dont la valeur, qui est un tableau de chaînes de caractères, contient la chaîne "Orlando Magic" et la chaîne "New York Knicks"
+
+    > db.players.find({"previousTeams" : { $all : [ "Orlando Magic", "New York Knicks" ] }})
+
+
+EXERCICE 20
+Dans une collection nommée players, 
+comment récupérer tous les documents possédant une propriété age dont la valeur est un entier supérieur à 30
+
+    > db.players.find({ "age" : { $gt : 30 }})
+
+
+EXERCICE 21
+Dans une collection nommée players, 
+comment récupérer tous les documents possédant une propriété birthPlace, qui elle-même possède une propriété country dont la valeur est une chaîne de caractères ayant pour valeur "Spain"
+
+    > db.players.find({ "birthPlace.country" : "Spain" })
+
+
+
+ALLER PLUS LOIN ?
+Faites les exercices disponibles ici : https://www.w3resource.com/mongodb-exercises/
+
+1. Write a MongoDB query to display all the documents in the collection restaurants.
+
+    > db.restaurants.find().pretty()
+
+2. Write a MongoDB query to display the fields 
+- restaurant_id 
+- name 
+- borough
+- cuisine 
+for all the documents in the collection restaurant.
+
+    > db.restaurants.find({},{"restaurant_id" : 1, "name" : 1, "borough" : 1, "cuisine" : 1}).pretty()
+
+3. Write a MongoDB query to display the fields 
+- restaurant_id 
+- name 
+- borough 
+- cuisine 
+but exclude the field _id for all the documents in the collection restaurant.
+
+    > db.restaurants.find({},{"restaurant_id" : 1, "name": 1, "borough": 1, "cuisine" : 1, "_id" : 0}).pretty()
+
+4. Write a MongoDB query to display the fields 
+- restaurant_id
+- name
+- borough
+- zip code 
+but exclude the field _id for all the documents in the collection restaurant.
+
+    > db.restaurants.find({},{"restaurant_id" : 1, "name" : 1, "borough" : 1, "address.zipcode" : 1, "_id" : 0}).pretty()
+
+5. Write a MongoDB query to display all the restaurant which is in the borough Bronx.
+
+    > db.restaurants.find({ "borough" : "Bronx" }).pretty()
+
+6. Write a MongoDB query to display the first 5 restaurant which is in the borough Bronx.
+
+    > db.restaurants.find({"borough": "Bronx"}).limit(5).pretty()
+
+7. Write a MongoDB query to display the next 5 restaurants after skipping first 5 which are in the borough Bronx.
+
+    > db.restaurants.find({"borough": "Bronx"}).skip(5).limit(5).pretty()
+
+8. Write a MongoDB query to find the restaurants who achieved a score more than 90.
+"grades": [
+    { "date": { "$date": 1393804800000 }, "grade": "A", "score": 2 },
+    { "date": { "$date": 1378857600000 }, "grade": "A", "score": 6 },
+    { "date": { "$date": 1358985600000 }, "grade": "A", "score": 10 }
+],
+
+    > db.restaurants.find({ "grades" : { $elemMatch : { "score" : { $gt : 90 }}}}).pretty()
+
+9. Write a MongoDB query to find the restaurants that achieved a score, more than 80 but less than 100.
+
+    > db.restaurants.find({ "grades" : { $elemMatch : { "score" : { $gt : 80, $lt : 100 }}}}).pretty()
+
+10. Write a MongoDB query to find the restaurants which locate in longitude value less than -95.754168.
+"address": {
+     "building": "1007",
+     "coord": [ -73.856077, 40.848447 ],
+     "street": "Morris Park Ave",
+     "zipcode": "10462"
+  },
+
+    > db.restaurants.find({ "address.coord" : { $lt : -95.754168 }}).pretty()
+
+11. Write a MongoDB query to find the restaurants that 
+- do not prepare any cuisine of 'American' 
+- their grade score more than 70
+- longitude less than -65.754168
+
+  > db.restaurants.find({ $and : [
+            { "cuisine" : { $ne :"American " }},
+            {"grades.score" : {$gt : 70}},
+            {"address.coord" : {$lt : -65.754168}}
+        ]
+     });
+
+12. Write a MongoDB query to find the restaurants which 
+- do not prepare any cuisine of 'American' 
+- achieved a score more than 70 
+- located in the longitude less than -65.754168.
+Note : Do this query without using $and operator.
+
+    > db.restaurants.find({ "cuisine" : { $ne : "American" }, "grades" : { $elemMatch : { "score" : { $gt : 70 }}}, "address.coord" : { $lt : -65.754168 }}).pretty()
+
+13. Write a MongoDB query to find the restaurants which 
+- do not prepare any cuisine of 'American ' 
+- achieved a grade point 'A' 
+- not belongs to the borough Brooklyn. 
+The document must be displayed according to the cuisine in descending order.
+
+    > db.restaurants.find({ "cuisine" : { $ne : "American" }, "grades" : { $elemMatch : { "grade" : "A"}}, "borough": { $ne : "Brooklyn" }}).sort({"cuisine":-1}).pretty()
+
+14. Write a MongoDB query to find the 
+- restaurant_id
+- name
+- borough
+- cuisine 
+for those restaurants which contain 'Wil' as first three letters for its name.
+
+    > db.restaurants.find({name: /^Wil/ }, { "restaurant_id" : 1, "name" : 1, "borough" : 1, "cuisine" : 1 }).pretty()
+
+15. Write a MongoDB query to find the 
+- restaurant_id
+- name
+- borough
+- cuisine  
+for those restaurants which contain 'ces' as last three letters for its name.
+
+    > db.restaurants.find({ "name" : /ces$/ }, { "restaurant_id" : 1, "name" : 1, "borough" : 1, "cuisine" : 1 });
+
+
